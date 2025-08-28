@@ -54,17 +54,46 @@
 // 🎯 Bonus: HOF con closure per memorizzare l'ultimo lancio
 // Modifica la funzione in creaLanciaDado(), che restituisce una closure che memorizza l'ultimo risultato. Se il numero esce due volte di fila, stampa "Incredibile!".
 
-function lanciaDado(){
-   return new Promise((resolve,reject)=>{
-   setTimeout(()=>{
-       const rng = Math.floor(Math.random()*6)+1;
-       const errorHappened = Math.floor(Math.random()*5)+1;
-       errorHappened !== 5? resolve(rng): reject("Oh no! il dado si è incastrato!" )
+// function lanciaDado(){
+//    return new Promise((resolve,reject)=>{
+//    setTimeout(()=>{
+//        const rng = Math.floor(Math.random()*6)+1;
+//        const errorHappened = Math.floor(Math.random()*5)+1;
+//        errorHappened !== 5? resolve(rng): reject("Oh no! il dado si è incastrato!" )
        
-    },3000)
-   })
+//     },3000)
+//    })
+// }
+
+// lanciaDado()
+// .then(rng=>console.log("è uscito il numero: ",rng))
+// .catch(err=>console.log(err))
+
+const creaLanciaDado = () => {
+
+    let lastNumber = 0
+    return function(){
+        return new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+          const rng = Math.floor(Math.random()*6)+1;
+          const errorHappened = Math.floor(Math.random()*5)+1;
+          if(lastNumber=== rng){console.log("Incredibile!");
+          }
+             errorHappened !== 5? resolve(rng): reject("Oh no! il dado si è incastrato!" )
+             errorHappened === 5? lastNumber = 0 : lastNumber = rng
+            },3000)
+        })
+    }
 }
 
+const lanciaDado = creaLanciaDado()
+
 lanciaDado()
-.then(rng=>console.log("è uscito il numero: ",rng))
-.catch(err=>console.log(err))
+.then(first =>{console.log("primo numero: ",first)
+    lanciaDado()
+    .then(second=>console.log("secondo numero: ",second))
+    .catch(err=>console.log(err))
+})
+.catch(err=>console.log(err)
+)
+
