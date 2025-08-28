@@ -7,19 +7,28 @@
 const dumbLinkPost = "https://dummyjson.com/posts/"
 const dumbLinkUser = "https://dummyjson.com/users/"
 
-function getPostTitle (id){
-return new Promise((resolve,reject)=>{
-     fetch(`${dumbLinkPost}${id}`)
-    .then(res=> res.json())
-    .then(post =>resolve(post.title))
-    .catch(reject)
-})
+function getPostTitle(id){
+    return new Promise((resolve,reject)=> {
+        fetch(`${dumbLinkPost}${id}`)
+        .then(res=>res.json())
+        .then(post=>{fetch(`${dumbLinkUser}${post.userId}`)
+        .then(res=>res.json())
+        .then(user=>resolve({...post,user}))
+        .catch(reject)})
+    })
+}
 
 
-}getPostTitle(2)
-  .then(title => console.log(title))
+
+getPostTitle(2)
+  .then(title => console.log("Titolo post: ",title))
   .catch(err => console.error(err));
+
+
 // Crea una funzione getPost(id) che recupera l'intero post. Concatena una seconda chiamata che aggiunge una proprietà user che contiene i dati dell'autore, recuperati dalla chiamata https://dummyjson.com/users/{post.userId}.
+
+
+
 // 🏆 Snack 2
 // Crea la funzione lanciaDado() che restituisce una Promise che, dopo 3 secondi, genera un numero casuale tra 1 e 6. Tuttavia, nel 20% dei casi, il dado si "incastra" e la Promise va in reject.
 // 🎯 Bonus: HOF con closure per memorizzare l'ultimo lancio
