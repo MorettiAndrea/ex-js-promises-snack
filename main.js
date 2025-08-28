@@ -59,8 +59,7 @@ function lanciaDado(){
    setTimeout(()=>{
        const rng = Math.floor(Math.random()*6)+1;
        const errorHappened = Math.floor(Math.random()*5)+1;
-       console.log(rng);
-       errorHappened !== 5? resolve(rng) : reject("Oh no! il dado si è incastrato!" )
+       errorHappened !== 5? resolve(rng): reject("Oh no! il dado si è incastrato!" )
        
     },3000)
    })
