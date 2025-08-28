@@ -26,6 +26,26 @@ getPostTitle(2)
 
 
 // Crea una funzione getPost(id) che recupera l'intero post. Concatena una seconda chiamata che aggiunge una proprietà user che contiene i dati dell'autore, recuperati dalla chiamata https://dummyjson.com/users/{post.userId}.
+function getPost(id){
+    return new Promise((resolve,reject)=>{
+        fetch(`${dumbLinkPost}${id}`)
+        .then(res=>res.json())
+        .then(post=>{fetch(`${dumbLinkUser}${post.userId}`)
+    .then(res=>res.json())
+.then(user=>resolve({...post,
+    author:user.firstName + (" ")+ user.lastName}))
+.catch(reject)})
+    })
+}
+
+
+
+
+
+getPost(1)
+.then(post=>console.log("post completo: ",post))
+.catch(err=>console.error(err))
+
 
 
 
